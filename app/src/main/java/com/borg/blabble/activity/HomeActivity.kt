@@ -47,7 +47,7 @@ class HomeActivity : AppCompatActivity() {
                     Log.d(TAG, "Signed in anonymously with UID: ${user?.uid}")
 
                     //associate the username with user
-                    databaseReference = FirebaseDatabase.getInstance("https://fir-chattest-91778-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users")
+                    databaseReference = FirebaseDatabase.getInstance("https://blabble-5d037-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users")
                     databaseReference.child(user!!.uid).child("username").setValue(username)
                         .addOnCompleteListener(this){
                             if(it.isSuccessful){
