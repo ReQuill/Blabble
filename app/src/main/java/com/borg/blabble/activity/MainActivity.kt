@@ -13,10 +13,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.logo.alpha = 0f
-        binding.logo.animate().setDuration(1500).alpha(1f).withEndAction(){
+        binding.logo.animate().setDuration(1500).alpha(1f).withEndAction {
             val i = Intent(this, HomeActivity::class.java)
             startActivity(i)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }
     }

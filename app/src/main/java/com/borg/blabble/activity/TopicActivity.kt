@@ -72,16 +72,16 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
 
         auth = FirebaseAuth.getInstance()
 
-        // Set up the back button behavior
-//        val onBackPressedCallback = object: OnBackPressedCallback(true){
-//            override fun handleOnBackPressed() {
-//                // Your custom back button behavior here
-//                deleteUserData()
-//                // For example, you might want to navigate to a different screen or show a confirmation dialog
-//                finish()
-//            }
-//        }
-//        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+//         Set up the back button behavior
+        val onBackPressedCallback = object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                // Your custom back button behavior here
+                deleteUserData()
+                // For example, you might want to navigate to a different screen or show a confirmation dialog
+                finish()
+            }
+        }
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
     override fun onSwitchCheckedChange(position: Int, isChecked: Boolean) {
@@ -92,26 +92,26 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         }
     }
 
-//    private fun deleteUserData() {
-//        val user = auth.currentUser
-//
-//        if (user != null) {
-//            // Delete user data from the database
-//            val databaseReference = FirebaseDatabase.getInstance("https://your-firebase-project-id.firebaseio.com").getReference("users")
-//            val userReference = databaseReference.child(user.uid)
-//
-//            userReference.removeValue()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        Log.d(ContentValues.TAG, "User data deleted from the database")
-//                        // Optionally, sign the user out after deleting data
-//                        auth.signOut()
-//                        finish() // finish the current activity or navigate to another screen
-//                    } else {
-//                        Log.w(ContentValues.TAG, "Error deleting user data from the database", task.exception)
-//                        Toast.makeText(this, "Failed to delete user data. Please try again.", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//        }
-//    }
+    private fun deleteUserData() {
+        val user = auth.currentUser
+
+        if (user != null) {
+            // Delete user data from the database
+            val databaseReference = FirebaseDatabase.getInstance("https://your-firebase-project-id.firebaseio.com").getReference("users")
+            val userReference = databaseReference.child(user.uid)
+
+            userReference.removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(ContentValues.TAG, "User data deleted from the database")
+                        // Optionally, sign the user out after deleting data
+                        auth.signOut()
+                        finish() // finish the current activity or navigate to another screen
+                    } else {
+                        Log.w(ContentValues.TAG, "Error deleting user data from the database", task.exception)
+                        Toast.makeText(this, "Failed to delete user data. Please try again.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+    }
 }
