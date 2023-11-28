@@ -6,20 +6,69 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.borg.blabble.R
+import com.borg.blabble.adapter.TopicAdapter
 import com.borg.blabble.databinding.ActivityHomeBinding
 import com.borg.blabble.databinding.ActivityTopicBinding
+import com.borg.blabble.model.TopicData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class TopicActivity : AppCompatActivity() {
+class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeListener {
     private lateinit var binding: ActivityTopicBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var dataList: ArrayList<TopicData>
+    lateinit var imageList: Array<Int>
+    lateinit var titleList: Array<String>
+
+    private fun getData(){
+        for (i in imageList.indices){
+            val topicData = TopicData(imageList[i], titleList[i], isChecked = false)
+            dataList.add(topicData)
+        }
+        recyclerView.adapter = TopicAdapter(dataList, this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTopicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //topic recycler view
+        imageList = arrayOf(
+            R.drawable.ic_books,
+            R.drawable.ic_movies,
+            R.drawable.ic_games,
+            R.drawable.ic_medical,
+            R.drawable.ic_shopping,
+            R.drawable.ic_drawing,
+            R.drawable.ic_photography,
+            R.drawable.ic_cars
+        )
+
+        titleList = arrayOf(
+            "Books",
+            "Movies",
+            "Games",
+            "Medical",
+            "Shopping",
+            "Drawing",
+            "Photography",
+            "Cars"
+        )
+
+        recyclerView = binding.topicRecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+
+        dataList = arrayListOf<TopicData>()
+        getData()
 
         auth = FirebaseAuth.getInstance()
 
@@ -33,6 +82,14 @@ class TopicActivity : AppCompatActivity() {
 //            }
 //        }
 //        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+    override fun onSwitchCheckedChange(position: Int, isChecked: Boolean) {
+        val clickedItem = dataList[position]
+        if (isChecked) {
+            // Do something when the switch is activated (mungkin nanti disini logic user pairingnya
+            Toast.makeText(this, "Switch Activated for: ${clickedItem.topicTitle}", Toast.LENGTH_SHORT).show()
+        }
     }
 
 //    private fun deleteUserData() {
