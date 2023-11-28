@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Blabble</string>
+    <string name="chooseATopic">Choose A Topic</string>
+    <string name="startChatting">Start Chatting!</string>
 </resources>
