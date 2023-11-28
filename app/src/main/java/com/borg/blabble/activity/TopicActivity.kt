@@ -97,7 +97,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
 
         if (user != null) {
             // Delete user data from the database
-            val databaseReference = FirebaseDatabase.getInstance("https://your-firebase-project-id.firebaseio.com").getReference("users")
+            val databaseReference = FirebaseDatabase.getInstance("https://blabble-5d037-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users")
             val userReference = databaseReference.child(user.uid)
 
             userReference.removeValue()
