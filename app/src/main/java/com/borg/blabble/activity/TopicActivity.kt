@@ -1,6 +1,7 @@
 package com.borg.blabble.activity
 
 import android.content.ContentValues
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -80,6 +81,11 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
             }
         }
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
+        binding.starChatBtn.setOnClickListener{
+            val i = Intent(this, ChatActivity::class.java)
+            startActivity(i)
+        }
     }
 
     override fun onSwitchCheckedChange(position: Int, isChecked: Boolean) {
