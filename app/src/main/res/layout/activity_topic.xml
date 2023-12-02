@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="120dp"
         android:text="Now choose your topic, user"
+        android:textColor="@color/RaisinBlack"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/topicRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
