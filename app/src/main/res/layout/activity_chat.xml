@@ -30,14 +30,6 @@
             android:text=""
             android:textSize="15sp"
             android:textStyle="bold" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfile"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="42dp"
-            android:padding="5dp"
-            android:src="@mipmap/ic_launcher" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

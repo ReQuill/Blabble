@@ -24,6 +24,17 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.logo.translationY = 1000f
+        binding.textView.translationY = 1000f
+        binding.aliasText.translationY = 1000f
+        binding.topicBtn.translationY = 1000f
+
+        binding.logo.animate().setDuration(1000).translationY(-120f)
+        binding.textView.animate().setDuration(1500).translationY(-100f)
+        binding.aliasText.animate().setDuration(2000).translationY(-100f)
+        binding.topicBtn.animate().setDuration(2500).translationY(-50f)
+
+
         auth = FirebaseAuth.getInstance()
 
         binding.topicBtn.setOnClickListener {

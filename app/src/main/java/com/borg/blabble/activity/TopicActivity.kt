@@ -75,9 +75,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
 //         Set up the back button behavior
         val onBackPressedCallback = object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                // Your custom back button behavior here
                 deleteUserData()
-                // For example, you might want to navigate to a different screen or show a confirmation dialog
                 finish()
             }
         }
