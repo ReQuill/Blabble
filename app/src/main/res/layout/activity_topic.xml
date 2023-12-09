@@ -7,17 +7,37 @@
     tools:context=".activity.TopicActivity"
     android:background="@color/Vanilla">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:text="Now choose your topic, user"
-        android:textColor="@color/RaisinBlack"
-        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="38dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/topicRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now choose your topic, "
+            android:textColor="@color/RaisinBlack"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/topicRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="120dp"
+            android:text="user"
+            android:textColor="@color/RaisinBlack"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topicRecyclerView"

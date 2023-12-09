@@ -62,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
                 databaseReference.child(user.uid).child("username").setValue(username).addOnCompleteListener(this) { it ->
                     if(it.isSuccessful){
                         val i = Intent(this, TopicActivity::class.java)
+                        i.putExtra("username", username)
                         startActivity(i)
                     }
                 }
