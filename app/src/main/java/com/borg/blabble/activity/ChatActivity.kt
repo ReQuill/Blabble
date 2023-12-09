@@ -20,36 +20,36 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var intent = getIntent()
-        var userId = intent.getStringExtra("userId")
-
-        firebaseuser = FirebaseAuth.getInstance().currentUser
-        reference = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
-
-        binding.btnSendMessage.setOnClickListener{
-            var message: String = binding.etMessage.text.toString()
-
-            if(message.isEmpty()){
-                Toast.makeText(applicationContext, "message is empty", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                sendMessage(firebaseuser!!.uid, userId!!, message)
-            }
-        }
+//        var intent = getIntent()
+//        var userId = intent.getStringExtra("userId")
+//
+//        firebaseuser = FirebaseAuth.getInstance().currentUser
+//        reference = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
+//
+//        binding.btnSendMessage.setOnClickListener{
+//            var message: String = binding.etMessage.text.toString()
+//
+//            if(message.isEmpty()){
+//                Toast.makeText(applicationContext, "message is empty", Toast.LENGTH_SHORT).show()
+//            }
+//            else{
+//                sendMessage(firebaseuser!!.uid, userId!!, message)
+//            }
+//        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
     }
 
-    private fun sendMessage(senderId: String, receiverId: String, message: String){
-        var reference: DatabaseReference? = FirebaseDatabase.getInstance().getReference()
-
-        var hashMap: HashMap<String, String> = HashMap()
-        hashMap.put("senderId", senderId)
-        hashMap.put("receiverId", receiverId)
-        hashMap.put("message", message)
-
-        reference!!.child("Chat").push().setValue(hashMap)
-    }
+//    private fun sendMessage(senderId: String, receiverId: String, message: String){
+//        var reference: DatabaseReference? = FirebaseDatabase.getInstance().getReference()
+//
+//        var hashMap: HashMap<String, String> = HashMap()
+//        hashMap.put("senderId", senderId)
+//        hashMap.put("receiverId", receiverId)
+//        hashMap.put("message", message)
+//
+//        reference!!.child("Chat").push().setValue(hashMap)
+//    }
 }
