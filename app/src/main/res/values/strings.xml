@@ -2,4 +2,11 @@
     <string name="app_name">Blabble</string>
     <string name="chooseATopic">Choose A Topic</string>
     <string name="startChatting">Start Chatting!</string>
+    <string name="test">test</string>
+    <string name="blabble">Blabble</string>
+    <string name="message">Message</string>
+    <string name="alias">alias</string>
+    <string name="typealias">Type in your alias</string>
+    <string name="user">user</string>
+    <string name="nowchoose">Now your topic,\ </string>
 </resources>
