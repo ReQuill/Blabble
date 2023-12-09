@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.borg.blabble.R
 import com.borg.blabble.adapter.TopicAdapter
-import com.borg.blabble.databinding.ActivityHomeBinding
 import com.borg.blabble.databinding.ActivityTopicBinding
 import com.borg.blabble.model.TopicData
+import com.borg.blabble.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeListener {
     private lateinit var binding: ActivityTopicBinding
@@ -40,6 +45,12 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         super.onCreate(savedInstanceState)
         binding = ActivityTopicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //set the user alias
+        var intent = getIntent()
+        var userName = intent.getStringExtra("username")
+
+        binding.tUserName.setText(userName + "!")
 
         //topic recycler view
         imageList = arrayOf(
@@ -118,4 +129,6 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                 }
         }
     }
+
+
 }
