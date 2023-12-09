@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.borg.blabble.R
 import com.borg.blabble.model.TopicData
 
-class TopicAdapter(private val dataList: ArrayList<TopicData>, private val switchCheckedChangeListener: OnSwitchCheckedChangeListener):RecyclerView.Adapter<TopicAdapter.ViewHolder>(){
+class TopicAdapter(private val dataList: ArrayList<TopicData>, private val switchCheckedChangeListener: OnSwitchCheckedChangeListener)
+    :RecyclerView.Adapter<TopicAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.topic_layout, parent, false)

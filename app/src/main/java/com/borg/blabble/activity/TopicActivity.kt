@@ -1,6 +1,7 @@
 package com.borg.blabble.activity
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -94,7 +95,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         binding.starChatBtn.setOnClickListener{
-            val i = Intent(this, ChatActivity::class.java)
+            val i = Intent(this@TopicActivity, ChatActivity::class.java)
             startActivity(i)
         }
     }
@@ -129,6 +130,5 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                 }
         }
     }
-
 
 }
