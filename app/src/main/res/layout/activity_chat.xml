@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Blabble"
+            android:text="@string/blabble"
             android:textSize="15sp"
             android:textStyle="bold"
             android:layout_marginLeft="10dp"/>
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/White"
-                android:hint="Message"
+                android:hint="@string/message"
                 android:inputType="text"
                 android:padding="12dp"
                 android:textColor="@color/RaisinBlack" />
@@ -87,7 +87,6 @@
                 android:layout_height="40dp"
                 android:background="@color/White"
                 android:src="@drawable/ic_send"
-                android:text="sign up"
                 android:textColor="@color/RaisinBlack" />
 
         </LinearLayout>
