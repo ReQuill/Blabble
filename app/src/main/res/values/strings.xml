@@ -8,5 +8,7 @@
     <string name="alias">alias</string>
     <string name="typealias">Type in your alias</string>
     <string name="user">user</string>
-    <string name="nowchoose">Now your topic,\ </string>
+    <string name="nowchoose">Now choose your topic, %1$s!</string>
+    <string name="matching_failed_dialog_content">Sorry, but it looks like there are no users online that matches your preferred topics.\n\nPlease try again later or with different topics.</string>
+    <string name="matching_failed_dialog_title">Can\'t find matching user</string>
 </resources>

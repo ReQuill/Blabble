@@ -7,17 +7,17 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import com.borg.blabble.R
 import com.borg.blabble.databinding.ActivityHomeBinding
+import com.borg.blabble.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-
-    private lateinit var auth: FirebaseAuth
-    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +34,6 @@ class HomeActivity : AppCompatActivity() {
         binding.aliasText.animate().setDuration(2000).translationY(-100f)
         binding.topicBtn.animate().setDuration(2500).translationY(-50f)
 
-
-        auth = FirebaseAuth.getInstance()
-
         binding.topicBtn.setOnClickListener {
             if (TextUtils.isEmpty(binding.aliasText.text.toString())){
                 Toast.makeText(this, "You need to specify an alias", Toast.LENGTH_SHORT).show()
@@ -48,21 +45,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun signInAnonymously(username: String) {
-        auth.signOut()
+        Firebase.auth.signOut()
 
-        auth.signInAnonymously().addOnCompleteListener(this) {
-            var user = auth.currentUser
+        Firebase.auth.signInAnonymously().addOnCompleteListener(this) {
+            val userId = Firebase.auth.currentUser!!.uid
+            val user = User(username)
 
-            if (it.isSuccessful && user != null) {
-                //sign in success
+            if (it.isSuccessful) {
+                // Sign in success
+                Log.d(TAG, "Signed in anonymously with UID: $userId")
 
-                Log.d(TAG, "Signed in anonymously with UID: ${user.uid}")
-                //associate the username with user
-                databaseReference = FirebaseDatabase.getInstance("https://blabble-5d037-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users")
-                databaseReference.child(user.uid).child("username").setValue(username).addOnCompleteListener(this) { it ->
+                // Associate the username with user
+                Firebase.database.reference.child("users").child(userId).setValue(user).addOnCompleteListener(this) { it ->
                     if(it.isSuccessful){
                         val i = Intent(this, TopicActivity::class.java)
-                        i.putExtra("username", username)
+                        i.putExtra("com.borg.blabble.activity.user", user)
                         startActivity(i)
                     }
                 }

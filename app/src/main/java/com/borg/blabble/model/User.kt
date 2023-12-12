@@ -1,3 +1,9 @@
 package com.borg.blabble.model
 
-data class User (var userId: String, var userName: String)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class User(
+    val name: String? = null,
+): Parcelable

@@ -7,16 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.borg.blabble.R
-import com.borg.blabble.model.Chat
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.borg.blabble.model.Message
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-class ChatAdapter(private val context: Context, private val chatList: ArrayList<Chat>)
-    : RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
-
+class ChatAdapter(private val messageList: ArrayList<Message>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
     private val MESSAGE_TYPE_LEFT = 0
     private val MESSAGE_TYPE_RIGHT = 1
-    var firebaseUser: FirebaseUser? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtmessage: TextView = view.findViewById(R.id.tvMessage)
@@ -35,17 +32,16 @@ class ChatAdapter(private val context: Context, private val chatList: ArrayList<
     }
 
     override fun getItemCount(): Int {
-        return chatList.size
+        return messageList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chat = chatList[position]
-        holder.txtmessage.text = chat.message
+        val chat = messageList[position]
+        holder.txtmessage.text = chat.text
     }
 
     override fun getItemViewType(position: Int): Int {
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-        if (chatList[position].senderId == firebaseUser!!.uid) {
+        if (messageList[position].senderId == Firebase.auth.currentUser?.uid) {
             return MESSAGE_TYPE_RIGHT
         } else {
             return MESSAGE_TYPE_LEFT
