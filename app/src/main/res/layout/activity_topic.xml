@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/choose_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nowchoose"
@@ -29,14 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="120dp"
-            android:text="@string/user"
-            android:textColor="@color/RaisinBlack"
-            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -51,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/starChatBtn"
+        android:id="@+id/startChatButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/White"
