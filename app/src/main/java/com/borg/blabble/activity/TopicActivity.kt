@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.functions.ktx.functions
@@ -72,6 +73,26 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                 Log.d("TAG", error.message);
             }
         })
+
+        Firebase.database.reference
+            .child("users")
+            .child(Firebase.auth.currentUser?.uid!!)
+            .child("matched")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        Intent(this@TopicActivity, ChatActivity::class.java).let {
+                            it.putExtra("com.borg.blabble.activity.bubbleId", snapshot.value as String);
+                            it.putExtra("com.borg.blabble.activity.user", user)
+                            startActivity(it)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
 
         // Set up the back button behavior
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
