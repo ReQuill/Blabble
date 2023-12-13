@@ -80,11 +80,6 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                Intent(this@ChatActivity, TopicActivity::class.java).let {
-                    it.putExtra("com.borg.blabble.activity.user", user)
-                    startActivity(it)
-                    finish()
-                }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
