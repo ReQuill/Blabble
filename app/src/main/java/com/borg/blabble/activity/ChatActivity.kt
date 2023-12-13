@@ -3,6 +3,9 @@ package com.borg.blabble.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +42,11 @@ class ChatActivity : AppCompatActivity() {
 
         bubbleId = intent.getStringExtra("com.borg.blabble.activity.bubbleId")!!
         user = intent.getParcelableExtra<User>("com.borg.blabble.activity.user")!!
+
+        binding.etMessage.text = null
+        if(binding.etMessage.text.isEmpty()){
+            binding.btnSendMessage.isEnabled = false
+        }
 
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.chatRecyclerView.setHasFixedSize(true)
@@ -90,14 +98,42 @@ class ChatActivity : AppCompatActivity() {
             }
         })
 
+        binding.backBtn.setOnClickListener{
+            val i = Intent(this@ChatActivity, HomeActivity::class.java)
+            startActivity(i)
+            finish()
+        }
+
         binding.btnSendMessage.setOnClickListener {
             val message = Message(Firebase.auth.currentUser?.uid!!, binding.etMessage.text.toString())
             Firebase.database.reference.child("bubbles").child(bubbleId).child("messages").push().setValue(message)
+
+            binding.etMessage.text = null
         }
+
+        binding.etMessage.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(binding.etMessage.text.isEmpty()){
+                    binding.btnSendMessage.isEnabled = false
+                }
+                if(binding.etMessage.text.isNotEmpty()){
+                    binding.btnSendMessage.isEnabled = true
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
 
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
+                val i = Intent(this@ChatActivity, TopicActivity::class.java)
+                startActivity(i)
                 finish()
             }
         })

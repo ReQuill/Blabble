@@ -36,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.topicBtn.setOnClickListener {
             if (TextUtils.isEmpty(binding.aliasText.text.toString())){
+                binding.aliasText.text = null
                 Toast.makeText(this, "You need to specify an alias", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -61,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
                         val i = Intent(this, TopicActivity::class.java)
                         i.putExtra("com.borg.blabble.activity.user", user)
                         startActivity(i)
+                        finish()
                     }
                 }
             }
