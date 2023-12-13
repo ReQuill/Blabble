@@ -24,7 +24,7 @@ class TopicAdapter(private val topics: ArrayList<Topic>, private val switchCheck
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val topic = topics[position]
-        //holder.rvImage.setImageResource(topic.topicImage)
+//        holder.rvImage.setImageResource(topic.topicImage)
         holder.rvTitle.text = topic.title
 
         // setup switch listener

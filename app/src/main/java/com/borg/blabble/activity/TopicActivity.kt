@@ -89,6 +89,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                             it.putExtra("com.borg.blabble.activity.bubbleId", snapshot.value as String);
                             it.putExtra("com.borg.blabble.activity.user", user)
                             startActivity(it)
+                            finish()
                         }
                     }
                 }

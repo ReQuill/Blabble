@@ -46,7 +46,7 @@
     <Button
         android:id="@+id/startChatButton"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:backgroundTint="@color/White"
         android:text="@string/startChatting"
         android:textColor="@color/RaisinBlack"
