@@ -1,11 +1,13 @@
 package com.borg.blabble.activity
 
+import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.ArrayMap
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -35,6 +37,8 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
 
     private var topicList: ArrayList<Topic> = arrayListOf()
     private var topicSelected: ArrayMap<Topic, Boolean> = ArrayMap()
+
+    private lateinit var loadingDialog: Dialog
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +107,15 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         })
 
         binding.startChatButton.setOnClickListener {
+            //loading..
+            loadingDialog = Dialog(this)
+            loadingDialog.setContentView(R.layout.loading_layout)
+            loadingDialog.window!!.setLayout(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            loadingDialog.show()
+
             startUserPairing()
         }
     }
@@ -111,7 +124,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         val topic = topicList[position]
 
         if (isChecked) {
-            Toast.makeText(this, "Selected topic: ${topic.title}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Selected topic: ${topic.title}", Toast.LENGTH_SHORT).show()
         }
 
         topicSelected[topic] = isChecked
@@ -137,9 +150,12 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                         it.putExtra("com.borg.blabble.activity.bubbleId", task.result.data as String);
                         it.putExtra("com.borg.blabble.activity.user", user)
                         startActivity(it)
+                        finish()
                     }
                 } else {
                     Log.e("TAG", task.exception?.message!!)
+
+                    loadingDialog.hide()
 
                     val builder: AlertDialog.Builder = AlertDialog.Builder(this@TopicActivity)
                     builder

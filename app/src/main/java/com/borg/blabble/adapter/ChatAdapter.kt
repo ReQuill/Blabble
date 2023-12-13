@@ -26,7 +26,7 @@ class ChatAdapter(private val messageList: ArrayList<Message>) : RecyclerView.Ad
             return ViewHolder(view)
         } else {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.chat_right_layout, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.chat_left_layout, parent, false)
             return ViewHolder(view)
         }
     }
