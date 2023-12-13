@@ -43,6 +43,7 @@ class ChatActivity : AppCompatActivity() {
         bubbleId = intent.getStringExtra("com.borg.blabble.activity.bubbleId")!!
         user = intent.getParcelableExtra<User>("com.borg.blabble.activity.user")!!
 
+        //if editText is empty, set sendbtn to false
         binding.etMessage.text = null
         if(binding.etMessage.text.isEmpty()){
             binding.btnSendMessage.isEnabled = false
@@ -79,6 +80,11 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                Intent(this@ChatActivity, TopicActivity::class.java).let {
+                    it.putExtra("com.borg.blabble.activity.user", user)
+                    startActivity(it)
+                    finish()
+                }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -99,9 +105,12 @@ class ChatActivity : AppCompatActivity() {
         })
 
         binding.backBtn.setOnClickListener{
-            val i = Intent(this@ChatActivity, HomeActivity::class.java)
-            startActivity(i)
-            finish()
+            Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
+//            Intent(this@ChatActivity, TopicActivity::class.java).let {
+//                it.putExtra("com.borg.blabble.activity.user", user)
+//                startActivity(it)
+//                finish()
+//            }
         }
 
         binding.btnSendMessage.setOnClickListener {
@@ -132,9 +141,11 @@ class ChatActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
-                val i = Intent(this@ChatActivity, TopicActivity::class.java)
-                startActivity(i)
-                finish()
+//                Intent(this@ChatActivity, TopicActivity::class.java).let {
+//                    it.putExtra("com.borg.blabble.activity.user", user)
+//                    startActivity(it)
+//                    finish()
+//                }
             }
         })
     }

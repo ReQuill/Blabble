@@ -40,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "You need to specify an alias", Toast.LENGTH_SHORT).show()
             }
             else {
+                binding.topicBtn.isEnabled = false
                 signInAnonymously(binding.aliasText.text.toString())
             }
         }
