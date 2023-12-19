@@ -1,17 +1,19 @@
 package com.borg.blabble.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.size
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.borg.blabble.R
 import com.borg.blabble.model.Message
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class ChatAdapter(private val messageList: ArrayList<Message>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
+class ChatAdapter(private val messageList: ArrayList<Message>, private val layoutManager: LinearLayoutManager, private val recyclerView: RecyclerView)
+    : RecyclerView.Adapter<ChatAdapter.ViewHolder>(){
     private val MESSAGE_TYPE_LEFT = 0
     private val MESSAGE_TYPE_RIGHT = 1
 
@@ -29,6 +31,24 @@ class ChatAdapter(private val messageList: ArrayList<Message>) : RecyclerView.Ad
                 LayoutInflater.from(parent.context).inflate(R.layout.chat_left_layout, parent, false)
             return ViewHolder(view)
         }
+    }
+
+    private val dataObserver = object: RecyclerView.AdapterDataObserver(){
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+            super.onItemRangeChanged(positionStart, itemCount)
+
+            val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
+
+            // If the recycler view is initially being loaded or the user is at the bottom of the
+            // list, scroll to the bottom of the list to show the newly added message.
+            if (lastVisiblePosition == -1 || positionStart >= itemCount - 1 && lastVisiblePosition == positionStart - 1) {
+                recyclerView.scrollToPosition(positionStart)
+            }
+        }
+    }
+
+    init {
+        registerAdapterDataObserver(dataObserver)
     }
 
     override fun getItemCount(): Int {
