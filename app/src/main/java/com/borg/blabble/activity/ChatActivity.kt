@@ -49,9 +49,11 @@ class ChatActivity : AppCompatActivity() {
             binding.btnSendMessage.isEnabled = false
         }
 
-        binding.chatRecyclerView.layoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+
+        binding.chatRecyclerView.layoutManager = linearLayoutManager
         binding.chatRecyclerView.setHasFixedSize(true)
-        binding.chatRecyclerView.adapter = ChatAdapter(messageList)
+        binding.chatRecyclerView.adapter = ChatAdapter(messageList, linearLayoutManager, binding.chatRecyclerView)
 
         Firebase.database.reference.child("bubbles").child(bubbleId).child("messages")
             .addChildEventListener(object : ChildEventListener {
@@ -101,11 +103,6 @@ class ChatActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener{
             Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
-//            Intent(this@ChatActivity, TopicActivity::class.java).let {
-//                it.putExtra("com.borg.blabble.activity.user", user)
-//                startActivity(it)
-//                finish()
-//            }
         }
 
         binding.btnSendMessage.setOnClickListener {
@@ -136,11 +133,6 @@ class ChatActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
-//                Intent(this@ChatActivity, TopicActivity::class.java).let {
-//                    it.putExtra("com.borg.blabble.activity.user", user)
-//                    startActivity(it)
-//                    finish()
-//                }
             }
         })
     }
