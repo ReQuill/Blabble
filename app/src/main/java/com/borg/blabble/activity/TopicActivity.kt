@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.borg.blabble.R
 import com.borg.blabble.adapter.TopicAdapter
 import com.borg.blabble.databinding.ActivityTopicBinding
@@ -36,7 +35,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
     private lateinit var user: User
 
     private var topicList: ArrayList<Topic> = arrayListOf()
-    private var topicSelected: ArrayMap<Topic, Boolean> = ArrayMap()
+    private var selectedTopics: HashSet<Int> = hashSetOf()
 
     private lateinit var loadingDialog: Dialog
 
@@ -55,12 +54,13 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         binding.topicRecyclerView.setHasFixedSize(true)
         binding.topicRecyclerView.adapter = TopicAdapter(topicList, this)
 
+        selectedTopics.clear()
+
         Firebase.database.reference.child("topics").addChildEventListener(object: ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.getValue<Topic>()?.let {
                     topicList.add(it)
                     binding.topicRecyclerView.adapter?.notifyItemInserted(topicList.indexOf(it))
-                    topicSelected[it] = false
                 }
             }
 
@@ -84,18 +84,24 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
             .child("matched")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    // Children must be whole (userId and bubbleId) which amounts to 2 properties
+                    if (snapshot.childrenCount.toInt() != 2)
+                        return
+
                     if (snapshot.exists()) {
+                        Log.d("TAG", "Pairing successful")
+
+                        loadingDialog.hide()
+
                         Intent(this@TopicActivity, ChatActivity::class.java).let {
-                            it.putExtra("com.borg.blabble.activity.bubbleId", snapshot.value as String);
+                            it.putExtra("com.borg.blabble.activity.bubbleId", snapshot.child("bubbleId").value.toString());
                             it.putExtra("com.borg.blabble.activity.user", user)
                             startActivity(it)
-//                            finish()
                         }
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
                 }
             })
 
@@ -122,13 +128,11 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
     }
 
     override fun onSwitchCheckedChange(position: Int, isChecked: Boolean) {
-        val topic = topicList[position]
-
         if (isChecked) {
-//            Toast.makeText(this, "Selected topic: ${topic.title}", Toast.LENGTH_SHORT).show()
+            selectedTopics.add(position + 1)
+        } else {
+            selectedTopics.remove(position + 1)
         }
-
-        topicSelected[topic] = isChecked
     }
 
     private fun startUserPairing() {
@@ -138,22 +142,13 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
 
         val data = JSONObject();
         data.put("userId", currentUser.uid)
-        data.put("topics", JSONArray(topicSelected.filter { it.value }.map { it.key.title!! }))
+        data.put("topics", JSONArray(selectedTopics))
 
         Firebase.functions("asia-southeast1")
             .getHttpsCallable("requestPairing")
             .call(data)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("TAG", task.result.data.toString())
-
-                    Intent(this@TopicActivity, ChatActivity::class.java).let {
-                        it.putExtra("com.borg.blabble.activity.bubbleId", task.result.data as String);
-                        it.putExtra("com.borg.blabble.activity.user", user)
-                        startActivity(it)
-                        finish()
-                    }
-                } else {
+                if (!task.isSuccessful) {
                     Log.e("TAG", task.exception?.message!!)
 
                     loadingDialog.hide()

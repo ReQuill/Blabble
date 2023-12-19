@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -75,37 +76,23 @@ class ChatActivity : AppCompatActivity() {
                 }
             })
 
-        Firebase.database.reference.child("bubbles").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                if (snapshot.key == bubbleId) {
-                    Intent(this@ChatActivity, TopicActivity::class.java).let {
-                        it.putExtra("com.borg.blabble.activity.user", user)
-                        startActivity(it)
+        Firebase.database.reference
+            .child("users")
+            .child(Firebase.auth.currentUser?.uid!!)
+            .child("matched")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (!snapshot.exists()) {
                         finish()
                     }
                 }
-            }
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
 
         binding.backBtn.setOnClickListener{
             Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
-//            Intent(this@ChatActivity, TopicActivity::class.java).let {
-//                it.putExtra("com.borg.blabble.activity.user", user)
-//                startActivity(it)
-//                finish()
-//            }
         }
 
         binding.btnSendMessage.setOnClickListener {
@@ -136,11 +123,6 @@ class ChatActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
-//                Intent(this@ChatActivity, TopicActivity::class.java).let {
-//                    it.putExtra("com.borg.blabble.activity.user", user)
-//                    startActivity(it)
-//                    finish()
-//                }
             }
         })
     }
