@@ -63,7 +63,6 @@ class HomeActivity : AppCompatActivity() {
                         val i = Intent(this, TopicActivity::class.java)
                         i.putExtra("com.borg.blabble.activity.user", user)
                         startActivity(i)
-                        finish()
                     }
                 }
             }
