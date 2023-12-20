@@ -54,7 +54,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding.chatRecyclerView.layoutManager = linearLayoutManager
         binding.chatRecyclerView.setHasFixedSize(true)
-        binding.chatRecyclerView.adapter = ChatAdapter(messageList, linearLayoutManager, binding.chatRecyclerView)
+        binding.chatRecyclerView.adapter = ChatAdapter(messageList)
 
         Firebase.database.reference.child("bubbles").child(bubbleId).child("messages")
             .addChildEventListener(object : ChildEventListener {
@@ -62,6 +62,9 @@ class ChatActivity : AppCompatActivity() {
                     snapshot.getValue<Message>()?.let {
                         messageList.add(it)
                         binding.chatRecyclerView.adapter?.notifyItemInserted(messageList.indexOf(it))
+
+                        //auto scroll
+                        binding.chatRecyclerView.scrollToPosition(messageList.size - 1)
                     }
                 }
 
