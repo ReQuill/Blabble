@@ -1,11 +1,13 @@
 package com.borg.blabble.activity
 
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -130,5 +132,30 @@ class ChatActivity : AppCompatActivity() {
                 Firebase.database.reference.child("bubbles").child(bubbleId).removeValue()
             }
         })
+    }
+
+    private fun deleteUserData() {
+        val user = Firebase.auth.currentUser ?: return
+
+        // Delete user data from the database
+        val userReference = Firebase.database.reference.child("users").child(user.uid)
+
+        userReference.removeValue().addOnCompleteListener {
+            if (it.isSuccessful) {
+                Log.d(ContentValues.TAG, "User data deleted from the database")
+
+                // Optionally, sign the user out after deleting data
+                Firebase.auth.signOut()
+
+            } else {
+                Log.w(ContentValues.TAG, "Error deleting user data from the database", it.exception)
+                Toast.makeText(this, "Failed to delete user data. Please try again.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        deleteUserData()
     }
 }
