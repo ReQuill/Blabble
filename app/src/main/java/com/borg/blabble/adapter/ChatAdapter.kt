@@ -49,4 +49,5 @@ class ChatAdapter(private val messageList: ArrayList<Message>)
             return MESSAGE_TYPE_LEFT
         }
     }
+    
 }
