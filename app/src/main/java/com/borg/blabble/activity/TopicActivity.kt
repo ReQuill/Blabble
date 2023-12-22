@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.ArrayMap
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -31,7 +30,6 @@ import org.json.JSONObject
 
 class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeListener {
     private lateinit var binding: ActivityTopicBinding
-
     private lateinit var user: User
 
     private var topicList: ArrayList<Topic> = arrayListOf()
@@ -175,11 +173,23 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
                 // Optionally, sign the user out after deleting data
                 Firebase.auth.signOut()
 
-                finish() // finish the current activity or navigate to another screen
+                Intent(this@TopicActivity, HomeActivity::class.java).let {
+                    startActivity(it)
+                    finish()
+                }
+
             } else {
                 Log.w(ContentValues.TAG, "Error deleting user data from the database", it.exception)
                 Toast.makeText(this, "Failed to delete user data. Please try again.", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Dismiss the dialog to avoid WindowLeaked exception
+        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+            loadingDialog.dismiss()
         }
     }
 }

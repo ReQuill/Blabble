@@ -7,12 +7,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
-import com.borg.blabble.R
 import com.borg.blabble.databinding.ActivityHomeBinding
 import com.borg.blabble.model.User
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -60,9 +57,10 @@ class HomeActivity : AppCompatActivity() {
                 // Associate the username with user
                 Firebase.database.reference.child("users").child(userId).setValue(user).addOnCompleteListener(this) { it ->
                     if(it.isSuccessful){
-                        val i = Intent(this, TopicActivity::class.java)
+                        val i = Intent(this@HomeActivity, TopicActivity::class.java)
                         i.putExtra("com.borg.blabble.activity.user", user)
                         startActivity(i)
+                        finish()
                     }
                 }
             }
