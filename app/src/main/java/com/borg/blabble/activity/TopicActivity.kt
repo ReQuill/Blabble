@@ -191,5 +191,7 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
+
+        deleteUserData()
     }
 }
