@@ -185,13 +185,13 @@ class TopicActivity : AppCompatActivity(), TopicAdapter.OnSwitchCheckedChangeLis
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // Dismiss the dialog to avoid WindowLeaked exception
-        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
-            loadingDialog.dismiss()
-        }
-
-        deleteUserData()
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        // Dismiss the dialog to avoid WindowLeaked exception
+//        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+//            loadingDialog.dismiss()
+//        }
+//
+//        deleteUserData()
+//    }
 }
